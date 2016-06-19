@@ -42,16 +42,19 @@ class ShortenAPI < Grape::API
 		  ],
 	}
 	params do
-		requires :url, type: String, desc: '原始url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.webxx.net' }
+		requires :url, type: String, desc: '原始url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.pinewong.com' }
 	end
 	post '/' do
-		# 数据库存在直接返回
+		# 参数处理
+		params[:url] = params[:url].strip.chomp('/')
+
 		@shorten = Shortens::Shorten.find_by(url: params[:url])
+		# 数据库存在直接返回
 		return present @shorten, with: Entities::Shorten if @shorten
 
 		# 生成数据库不存在的短链
 		loop do
-			params[:short] = random_str
+			params[:short] = server_url + random_str
 			break !Shortens::Shorten.exists?(short: params[:short])
 		end
 
@@ -75,13 +78,13 @@ class ShortenAPI < Grape::API
 		  ],
 	}
 	params do
-		optional :short, type: String, desc: '短链'
-	  optional :url, type: String, desc: '原始url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.webxx.net' }
-	  exactly_one_of :short, :url		
+		optional :short, type: String, desc: '短链', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://urlis.cn/aaaaa' }
+	  optional :url, type: String, desc: '原始url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.pinewong.com' }
+	  exactly_one_of :short, :url
 	end
 	get '/' do
-		@shorten = Shortens::Shorten.find_by(short: params[:short]) if params[:short]
-		@shorten = Shortens::Shorten.find_by(url: params[:url]) if params[:url]
+		@shorten = Shortens::Shorten.find_by(url: params[:url].strip.chomp('/')) if params[:url]
+		@shorten = Shortens::Shorten.find_by( short: params[:short].strip.chomp('/') ) if params[:short]
 
 		error!('操作失败！没有找到数据', 604) if !@shorten
 		@shorten.count += 1
@@ -103,10 +106,14 @@ class ShortenAPI < Grape::API
 		  ],
 	}
 	params do
-		requires :short, type: String, desc: '短链'
-	  requires :url, type: String, desc: 'url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
+		requires :short, type: String, desc: '短链', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://urlis.cn/aaaaa' }
+	  requires :url, type: String, desc: 'url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.pinewong.com' }
 	end
 	put '/' do
+		# 参数处理
+		params[:short] = params[:short].strip.chomp('/')
+		params[:url] = params[:url].strip.chomp('/')
+
 		@shorten = Shortens::Shorten.find_by(short: params[:short])
 		error!('操作失败！没有找到数据', 604) if !@shorten
 		error!('操作失败！新链接与原链接一致', 602) if @shorten.url == params[:url]

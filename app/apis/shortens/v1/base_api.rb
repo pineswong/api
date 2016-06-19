@@ -30,6 +30,16 @@ class BaseAPI < Grape::API
 		  	# [401, '主动错误', Entities::Error],
 		  ]
 		end
+
+		# 定义服务器
+		def server_url
+			'http://urlis.cn/'
+		end
+
+		# 处理短链
+		def handle_short(str)
+			str.strip.chomp('/')
+		end
 	end
 
 	mount ShortenAPI
