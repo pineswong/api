@@ -42,7 +42,7 @@ class ShortenAPI < Grape::API
 		  ],
 	}
 	params do
-		requires :url, type: String, desc: '原始url', regexp: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, documentation: { default: 'http://www.pinewong.com' }
+		requires :url, type: String, desc: '原始url', regexp: /((^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)) | ((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))/ix, documentation: { default: 'http://www.pinewong.com' }
 	end
 	post '/' do
 		# 参数处理
