@@ -1,0 +1,49 @@
+cn:
+  hello: "你好，世界"
+  grape:
+    errors:
+      format: ! '%{attributes} %{message}'
+      messages:
+        coerce: '不合法'
+        presence: '不存在'
+        regexp: '不合法'
+        blank: '为空'
+        values: '没有一个合理值'
+        missing_vendor_option:
+          problem: '不存在 :vendor 选项.'
+          summary: '当版本使用了header, 你必须事先定义 :vendor 选项. '
+          resolution: "例如： version 'v1', using: :header, vendor: 'twitter'"
+        missing_mime_type:
+          problem: '%{new_format}中不存在 mime type'
+          resolution:
+            "你可以在 Grape::ContentTypes::CONTENT_TYPES 中选择已存在的 mime type 
+            或者通过添加 content_type :%{new_format}, 'application/%{new_format} 自定义'
+            "
+        invalid_with_option_for_represent:
+          problem: '你必须在 :with 选项中事先定义 entity 类'
+          resolution: '例如： 描述用户, :with => Entity::User'
+        missing_option: '你必须事先定义 :%{option} 选项.'
+        invalid_formatter: '不能将 %{klass} 转化成 %{to_format}'
+        invalid_versioner_option:
+          problem: '不明 :using 在 versioner: %{strategy}中'
+          resolution: '可以通过 :using is :path, :header, :param 解决'
+        unknown_validator: '不明验证器: %{validator_type}'
+        unknown_options: '不明选项: %{options}'
+        unknown_parameter: '不明参数: %{param}'
+        incompatible_option_values: '%{option1}: %{value1} 与选项 %{option2}: %{value2} 相矛盾'
+        mutual_exclusion: '只能且必须存在一个'
+        at_least_one: '不存在, 请至少提供一个'
+        exactly_one: '不存在，请提供其中一个'
+        all_or_none: '请全部提供或都不提供'
+        missing_group_type: '必须包含分组类型'
+        unsupported_group_type: '分组类型必须是 Array, Hash, JSON 或 Array[JSON]'
+        invalid_message_body:
+          problem: "消息主体和定义的格式不一致"
+          resolution:
+            "当用content-type 描述 %{body_format}时, 你必须在请求的 'body' 中通过一个有效的 %{body_format}"
+        invalid_accept_header:
+          problem: '不合理的响应头部'
+          resolution: '%{message}'
+        invalid_version_header:
+          problem: '不合理的版本头部'
+          resolution: '%{message}'
