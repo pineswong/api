@@ -2,7 +2,10 @@ class API < Grape::API
 	format :json
 
 	get '/' do
-		{ position: 'root' }
+		{ 
+			server: 'http://api.urlis.cn',
+			doc: 'http://api.urlis.cn/docs',
+		}
 	end
 
 	# mount OneAPI => 'one'
