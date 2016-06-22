@@ -16,32 +16,59 @@ ActiveRecord::Schema.define(version: 20160618112854) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "pays_fuels", force: :cascade do |t|
+    t.string   "number"
+    t.string   "unit"
+    t.string   "name"
+    t.string   "address"
+    t.decimal  "balance",    default: 10.0
+    t.boolean  "deleted",    default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "pays_records", force: :cascade do |t|
+    t.string   "order"
+    t.string   "item"
+    t.string   "number"
+    t.string   "name"
+    t.string   "money"
+    t.string   "balance"
+    t.boolean  "deleted",    default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "pays_users", force: :cascade do |t|
+    t.string   "username"
+    t.string   "password_digest"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "remember_digest"
+    t.string   "authentication_token"
+    t.boolean  "deleted",              default: false
+    t.boolean  "admin",                default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  create_table "pays_waters", force: :cascade do |t|
+    t.string   "number"
+    t.string   "unit"
+    t.string   "name"
+    t.string   "address"
+    t.decimal  "balance",    default: 10.0
+    t.boolean  "deleted",    default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "shortens_shortens", force: :cascade do |t|
     t.string   "short"
     t.string   "url"
     t.integer  "count",      default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-  end
-
-  create_table "urls_urls", force: :cascade do |t|
-    t.string   "short"
-    t.string   "url"
-    t.integer  "viewcount",  default: 0
-    t.integer  "transcount", default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string   "email"
-    t.string   "name"
-    t.datetime "activated"
-    t.boolean  "admin",                default: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "authentication_token"
-    t.string   "password_digest"
   end
 
 end

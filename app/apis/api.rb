@@ -8,6 +8,7 @@ class API < Grape::API
 	# mount OneAPI => 'one'
 	# mount TwoAPI => 'two'
 	mount Shortens::BaseAPI => 'shortens'
+	mount Pays::BaseAPI => 'pays'
 	mount Tests::BaseAPI => 'tests'
 
   add_swagger_documentation \
