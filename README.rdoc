@@ -6,14 +6,21 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
+ruby 2.2.5p319
 
 * System dependencies
 
 * Configuration
+PostgreSQL
+  username: postgres
+  password: postgres
 
 * Database creation
+db:create
 
 * Database initialization
+db:migrate;
+db:seed
 
 * How to run the test suite
 
